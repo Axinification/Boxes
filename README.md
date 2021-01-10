@@ -20,6 +20,18 @@ Składa się z 6 funkcji z następującym flowem:
                        
   **restartHandler()** - Ze względu na naturę aplikacji jej restart nie wpływa na sam program a na widoczne wartości które są resetowane do stanu początkowego.
   
+  Screenshoty
+  
+  **Start**
+  !["Start"](start.png)
+  
+  **Po kliknieciu start*
+  !["Pierwsza para"](1.png)
+  
+  **Po kliknieciu pierwszej pary*
+  !["Druga para"](2.png)
+  
+  **Słabej jakości gif (Komputer nie daje rady)**
   !["Boxes gif"](Boxes.gif)
   
   
