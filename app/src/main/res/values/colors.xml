@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <array name="buttonColors">
+        <item>#ffffffff</item>
+        <item>#ffff7fff</item>
+        <item>#ffffff7f</item>
+        <item>#ffff7f7f</item>
+        <item>#ffffff00</item>
+        <item>#ffff00ff</item>
+        <item>#ffff7f00</item>
+        <item>#ffff007f</item>
+        <item>#ffff0000</item>
+        <item>#ff7fffff</item>
+        <item>#ff7f7fff</item>
+        <item>#ff7fff7f</item>
+        <item>#ff7f7f7f</item>
+        <item>#ff7fff00</item>
+        <item>#ff7f00ff</item>
+        <item>#ff7f7f00</item>
+        <item>#ff7f007f</item>
+        <item>#ff7f0000</item>
+        <item>#ff00ffff</item>
+        <item>#ff007fff</item>
+        <item>#ff00ff7f</item>
+        <item>#ff007f7f</item>
+        <item>#ff00ff00</item>
+        <item>#ff0000ff</item>
+        <item>#ff007f00</item>
+        <item>#ff00007f</item>
+        <item>#ff000000</item>
+    </array>
+</resources>

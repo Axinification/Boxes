@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Boxes</string>
+    <string name="description">Click buttons with matching colors</string>
+    <string name="start">Start</string>
+    <string name="restart">Restart</string>
+    <string name="time">Time left:</string>
+    <string name="points">Points:</string>
+    <string name="_0">0</string>
+</resources>
