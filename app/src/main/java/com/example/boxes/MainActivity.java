@@ -44,10 +44,10 @@ public class MainActivity extends AppCompatActivity {
         }
         ta.recycle();
 
-        //Pull counter
+        //Set counter
         counter = findViewById(R.id.points);
 
-        //Pull buttons
+        //Set buttons
         Button btn1 = findViewById(R.id.btn1);
         Button btn2 = findViewById(R.id.btn2);
         Button btn3 = findViewById(R.id.btn3);
@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //Start handler function
     public void startHandler() {
         start.setClickable(false);
         start.getBackground().setAlpha(128);
@@ -92,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
         isStarted=!isStarted;
     }
 
+    //Restart handler function
     public void restartHandler() {
         points = 0;
         isStarted = false;
@@ -111,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
     public int firstColorCheck;
     public int secondColorCheck;
 
+    //Box click handler function
     public void clickHandler(View view){
         if (flag) {
             firstClick = (Button) view;
@@ -140,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
         flag = !flag;
     }
 
+    //Add pair function
     public void addPair() {
         Button[] selectedButton = selectButtons(allButtons);
         Random color =  new Random();
@@ -161,6 +165,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //Getting random buttons
     private static Button[] selectButtons(Button[] allButtons) {
         Random button = new Random();
         Button randomButton1 = allButtons[button.nextInt(allButtons.length)];
