@@ -28,7 +28,7 @@ Składa się z 6 funkcji z następującym flowem:
   **Po kliknieciu start**
   !["Pierwsza para"](1.png)
   
-  **Po kliknieciu pierwszej pary**
+  **Po kliknieciu pierwszej pary** (Zdałem sobie właśnie sprawę że dałem złego screena ale koncept jest zachowany)
   !["Druga para"](2.png)
   
   **Słabej jakości gif (Komputer nie daje rady)**
