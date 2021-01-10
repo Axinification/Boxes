@@ -25,10 +25,10 @@ Składa się z 6 funkcji z następującym flowem:
   **Start**
   !["Start"](start.png)
   
-  **Po kliknieciu start*
+  **Po kliknieciu start**
   !["Pierwsza para"](1.png)
   
-  **Po kliknieciu pierwszej pary*
+  **Po kliknieciu pierwszej pary**
   !["Druga para"](2.png)
   
   **Słabej jakości gif (Komputer nie daje rady)**
