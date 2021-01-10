@@ -96,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
     //Restart handler function
     public void restartHandler() {
         points = 0;
+        counter.setText(String.valueOf(points));
         isStarted = false;
         flag = true;
         start.setClickable(true);
