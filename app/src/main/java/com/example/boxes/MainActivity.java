@@ -1,13 +1,20 @@
 package com.example.boxes;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.Locale;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
@@ -16,11 +23,18 @@ public class MainActivity extends AppCompatActivity {
     public Button restart;
     public Button[] allButtons;
     public TextView counter;
+    public TextView timer;
+    public int startingTime = 10000;
+    long timeLeft;
+
+
     public int points = 0;
+
 
     public static int[] colors;
     boolean isStarted = false;
     boolean flag = true;
+    private CountDownTimer countDownTimer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +57,10 @@ public class MainActivity extends AppCompatActivity {
             colors[i] = ta.getColor(i, 0);
         }
         ta.recycle();
+
+        //Set timer
+        final CountDownTimer[] countDownTimer = new CountDownTimer[1];
+        timer = findViewById(R.id.timer);
 
         //Set counter
         counter = findViewById(R.id.points);
@@ -82,20 +100,25 @@ public class MainActivity extends AppCompatActivity {
             button.setOnClickListener(v -> clickHandler(button));
         }
     }
-
+    //TODO: Work on GUI
+    //TODO: Setup Firebase Google authentication and send points with current location to database for ranking
     //Start handler function
     public void startHandler() {
         start.setClickable(false);
         start.getBackground().setAlpha(128);
         restart.setClickable(true);
         restart.getBackground().setAlpha(255);
-        addPair();
+        timer.setText("00:00");
+        addBoxes();
+        setTimer(startingTime);
+
         isStarted=!isStarted;
     }
 
     //Restart handler function
     public void restartHandler() {
         points = 0;
+        countDownTimer.cancel();
         counter.setText(String.valueOf(points));
         isStarted = false;
         flag = true;
@@ -107,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
             allButtons[i].setVisibility(View.INVISIBLE);
             allButtons[i].getBackground().setAlpha(255);
         }
+        countDownTimer.start();
     }
 
     public Button firstClick;
@@ -115,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
     public int secondColorCheck;
 
     //Box click handler function
+    //Boxes are matched based on color
     public void clickHandler(View view){
         if (flag) {
             firstClick = (Button) view;
@@ -125,27 +150,46 @@ public class MainActivity extends AppCompatActivity {
             secondClick = (Button) view;
             secondColorCheck = secondClick.getCurrentTextColor();
             if (firstColorCheck == secondColorCheck) {
+                //If matched
+                //Hide and disable clicked buttons
                 view.setClickable(false);
                 firstClick.getBackground().setAlpha(255);
                 firstClick.setVisibility(View.INVISIBLE);
                 secondClick.setVisibility(View.INVISIBLE);
+                //Increment and update points
                 points++;
                 counter.setText(String.valueOf(points));
-                addPair();
+                //Add one second and update timer
+                timeLeft += 1000;
+                countDownTimer.cancel();
+                setTimer(timeLeft);
+                //Add 3 new boxes
+                addBoxes();
             } else {
                 firstClick.setClickable(true);
                 firstClick.getBackground().setAlpha(255);
                 secondClick.setClickable(true);
                 secondClick.getBackground().setAlpha(255);
-                points--;
                 counter.setText(String.valueOf(points));
+                timeLeft -= 5000;
+                String str = timeLeft+"";
+                Log.i("Time Left: ",str);
+                if (timeLeft < 0) {
+                    countDownTimer.cancel();
+                    timer.setText("00:00");
+                    countDownTimer.onFinish();
+                }
+                else {
+                    countDownTimer.cancel();
+                    setTimer(timeLeft);
+                }
             }
         }
         flag = !flag;
     }
 
     //Add pair function
-    public void addPair() {
+    public void addBoxes() {
         Button[] selectedButton = selectButtons(allButtons);
         Random color =  new Random();
         int selectedColor = colors[color.nextInt(colors.length)];
@@ -179,4 +223,38 @@ public class MainActivity extends AppCompatActivity {
             return selectButtons(allButtons);
         }
     }
+    
+    public void setTimer(long currentTime) {
+        countDownTimer = new CountDownTimer(currentTime, 1000) {
+
+            @Override
+            public void onTick(long millisUntilFinished) {
+                int min = (int) millisUntilFinished / 1000 / 60;
+                int sec = (int) millisUntilFinished / 1000 % 60;
+                timeLeft = millisUntilFinished;
+                if (timeLeft < 0) onFinish();
+
+                String time = String.format(Locale.getDefault(), "%02d:%02d", min, sec);
+
+                timer.setText(time);
+            }
+
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onFinish() {
+                //TODO: Find out why it doesnt work (probably has to end by itself, in that case create finishing method with layout popup and shit)
+                //Set Board
+                Log.i("Finished", "works");
+                View overlay=findViewById(R.id.overlay);
+                overlay.bringToFront();
+                Context context = getApplicationContext();
+                Toast.makeText(context, "You've lost!", Toast.LENGTH_LONG).show();
+            }
+        }.start();
+        
+
+    }
+
 }
+
+    
