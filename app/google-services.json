@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1030263444170",
+    "project_id": "boxes-a4b83",
+    "storage_bucket": "boxes-a4b83.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1030263444170:android:279254657aa93051209a33",
+        "android_client_info": {
+          "package_name": "com.example.boxes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1030263444170-dvdrn5d5papjd69h04kmdmaukd7j5m9e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwC-7mC1LQrPbsOFfRNgoTE-mhSIOooC8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1030263444170-dvdrn5d5papjd69h04kmdmaukd7j5m9e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

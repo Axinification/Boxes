@@ -1,23 +1,19 @@
 package com.example.boxes;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Locale;
 import java.util.Random;
 
-public class MainActivity extends AppCompatActivity {
+public class GameActivity extends AppCompatActivity {
 
     public Button start;
     public Button restart;
@@ -39,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_game);
 
         //Set start/restart button event listener
         start = findViewById(R.id.start);
@@ -126,11 +122,12 @@ public class MainActivity extends AppCompatActivity {
         restart.setClickable(false);
         restart.getBackground().setAlpha(128);
         start.getBackground().setAlpha(255);
+        resetTimer();
         for (int i = allButtons.length - 1; i >= 0; i--) {
             allButtons[i].setVisibility(View.INVISIBLE);
             allButtons[i].getBackground().setAlpha(255);
         }
-        countDownTimer.start();
+//        countDownTimer.start();
     }
 
     public Button firstClick;
@@ -175,8 +172,7 @@ public class MainActivity extends AppCompatActivity {
                 String str = timeLeft+"";
                 Log.i("Time Left: ",str);
                 if (timeLeft < 0) {
-                    countDownTimer.cancel();
-                    timer.setText("00:00");
+                    resetTimer();
                     countDownTimer.onFinish();
                 }
                 else {
@@ -239,21 +235,23 @@ public class MainActivity extends AppCompatActivity {
                 timer.setText(time);
             }
 
-            @SuppressLint("SetTextI18n")
             @Override
             public void onFinish() {
-                //TODO: Find out why it doesnt work (probably has to end by itself, in that case create finishing method with layout popup and shit)
-                //Set Board
-                Log.i("Finished", "works");
-                View overlay=findViewById(R.id.overlay);
-                overlay.bringToFront();
-                Context context = getApplicationContext();
-                Toast.makeText(context, "You've lost!", Toast.LENGTH_LONG).show();
+//                timeUp();
             }
         }.start();
-        
-
     }
+
+    public void resetTimer() {
+        countDownTimer.cancel();
+        timer.setText("00:00");
+    }
+
+//    public void timeUp() {
+//        View background=findViewById(R.id.background);
+//
+//        background.bringToFront();
+//    }
 
 }
 

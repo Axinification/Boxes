@@ -6,4 +6,9 @@
     <string name="time">Time left:</string>
     <string name="points">Points:</string>
     <string name="_0">0</string>
+    <string name="_00_00">00:00</string>
+    <string name="boxes">Boxes</string>
+    <string name="start_game">Start game</string>
+    <string name="leaderboard">Leaderboard</string>
+    <string name="exit">Exit</string>
 </resources>
