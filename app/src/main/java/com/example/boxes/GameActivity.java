@@ -1,5 +1,6 @@
 package com.example.boxes;
 
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -13,13 +14,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.Locale;
 import java.util.Random;
 
+
 public class GameActivity extends AppCompatActivity {
 
     public Button start;
     public Button restart;
+    public Button menu;
     public Button[] allButtons;
     public TextView counter;
     public TextView timer;
+    public View boxContainer;
     public int startingTime = 10000;
     long timeLeft;
 
@@ -41,10 +45,16 @@ public class GameActivity extends AppCompatActivity {
         start = findViewById(R.id.start);
         start.setOnClickListener(v -> startHandler());
 
+        menu = findViewById(R.id.menu);
+        menu.setOnClickListener(v -> startActivity(new Intent(GameActivity.this, MenuActivity.class)));
+
         restart = findViewById((R.id.restart));
         restart.setOnClickListener(v -> restartHandler());
         restart.setClickable(false);
         restart.getBackground().setAlpha(128);
+
+        boxContainer = findViewById(R.id.boxBoard);
+
 
         //Set color list
         TypedArray ta = getResources().obtainTypedArray(R.array.buttonColors);
@@ -55,7 +65,6 @@ public class GameActivity extends AppCompatActivity {
         ta.recycle();
 
         //Set timer
-        final CountDownTimer[] countDownTimer = new CountDownTimer[1];
         timer = findViewById(R.id.timer);
 
         //Set counter
@@ -100,20 +109,21 @@ public class GameActivity extends AppCompatActivity {
     //TODO: Setup Firebase Google authentication and send points with current location to database for ranking
     //Start handler function
     public void startHandler() {
+        boxContainer.setVisibility(View.VISIBLE);
         start.setClickable(false);
         start.getBackground().setAlpha(128);
         restart.setClickable(true);
         restart.getBackground().setAlpha(255);
-        timer.setText("00:00");
+        timer.setText(R.string.timer);
         addBoxes();
         setTimer(startingTime);
-
         isStarted=!isStarted;
     }
 
     //Restart handler function
     public void restartHandler() {
         points = 0;
+
         countDownTimer.cancel();
         counter.setText(String.valueOf(points));
         isStarted = false;
@@ -127,7 +137,7 @@ public class GameActivity extends AppCompatActivity {
             allButtons[i].setVisibility(View.INVISIBLE);
             allButtons[i].getBackground().setAlpha(255);
         }
-//        countDownTimer.start();
+        boxContainer.setVisibility(View.VISIBLE);
     }
 
     public Button firstClick;
@@ -172,8 +182,7 @@ public class GameActivity extends AppCompatActivity {
                 String str = timeLeft+"";
                 Log.i("Time Left: ",str);
                 if (timeLeft < 0) {
-                    resetTimer();
-                    countDownTimer.onFinish();
+                    timeUp();
                 }
                 else {
                     countDownTimer.cancel();
@@ -219,7 +228,7 @@ public class GameActivity extends AppCompatActivity {
             return selectButtons(allButtons);
         }
     }
-    
+
     public void setTimer(long currentTime) {
         countDownTimer = new CountDownTimer(currentTime, 1000) {
 
@@ -228,7 +237,7 @@ public class GameActivity extends AppCompatActivity {
                 int min = (int) millisUntilFinished / 1000 / 60;
                 int sec = (int) millisUntilFinished / 1000 % 60;
                 timeLeft = millisUntilFinished;
-                if (timeLeft < 0) onFinish();
+                if (timeLeft < 0) timeUp();
 
                 String time = String.format(Locale.getDefault(), "%02d:%02d", min, sec);
 
@@ -237,21 +246,22 @@ public class GameActivity extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-//                timeUp();
+                timeUp();
             }
         }.start();
     }
 
     public void resetTimer() {
         countDownTimer.cancel();
-        timer.setText("00:00");
+        timer.setText(R.string.timer);
     }
 
-//    public void timeUp() {
-//        View background=findViewById(R.id.background);
-//
-//        background.bringToFront();
-//    }
+    public void timeUp() {
+        int score = Integer.parseInt(counter.getText().toString());
+        restartHandler();
+        boxContainer.setVisibility(View.INVISIBLE);
+        Log.i("Score: ", ""+score);
+    }
 
 }
 
