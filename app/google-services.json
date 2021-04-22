@@ -1,41 +1,34 @@
 {
   "project_info": {
-    "project_number": "1030263444170",
-    "project_id": "boxes-a4b83",
-    "storage_bucket": "boxes-a4b83.appspot.com"
+    "project_number": "553039544509",
+    "firebase_url": "https://tiles-up-fef35-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "tiles-up-fef35",
+    "storage_bucket": "tiles-up-fef35.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1030263444170:android:279254657aa93051209a33",
+        "mobilesdk_app_id": "1:553039544509:android:10b18eb8149c0ffb61f7d4",
         "android_client_info": {
           "package_name": "com.example.boxes"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1030263444170-coq1lkc9dviun01k7sgpj4pqpa8f0rii.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.boxes",
-            "certificate_hash": "d8c70ad75d9f671965782ef8a9693f03ebccf09e"
-          }
-        },
-        {
-          "client_id": "1030263444170-dvdrn5d5papjd69h04kmdmaukd7j5m9e.apps.googleusercontent.com",
+          "client_id": "553039544509-i10g1q22ohhap27h4b363256a3cpmfh4.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDwC-7mC1LQrPbsOFfRNgoTE-mhSIOooC8"
+          "current_key": "AIzaSyC4X-JonRF9mhQmNl01NQ4xdoN_LwWRJNI"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1030263444170-dvdrn5d5papjd69h04kmdmaukd7j5m9e.apps.googleusercontent.com",
+              "client_id": "553039544509-i10g1q22ohhap27h4b363256a3cpmfh4.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

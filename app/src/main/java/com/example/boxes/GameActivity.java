@@ -9,11 +9,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.ViewFlipper;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Locale;
 import java.util.Random;
@@ -21,19 +25,23 @@ import java.util.Random;
 
 public class GameActivity extends AppCompatActivity {
 
-    public Button start, menu, restart, menuScore;
-    public Button[] allButtons;
-    public TextView counter;
-    public TextView timer;
-    public View boxContainer;
-    public int startingTime = 10000;
+    private Button start, menu, restart, menuScore;
+    private Button[] allButtons;
+    private TextView counter, timer, scoreText, highScoreText;
+    private int startingTime = 10000;
+    private ViewFlipper viewFlipper;
     long timeLeft;
+    String personId, personName;
+    ScoreboardHelper helper;
+
+    FirebaseDatabase database;
+    DatabaseReference reference;
 
 
-    public int points = 0;
+    private int points = 0;
 
 
-    public static int[] colors;
+    private static int[] colors;
     boolean isStarted = false;
     boolean flag = true;
     private CountDownTimer countDownTimer;
@@ -50,7 +58,7 @@ public class GameActivity extends AppCompatActivity {
         menu = findViewById(R.id.menu);
         menu.setOnClickListener(v -> startActivity(new Intent(GameActivity.this, MenuActivity.class)));
 
-        boxContainer = findViewById(R.id.boxBoard);
+        viewFlipper = findViewById(R.id.viewFlipper);
 
 
         //Set color list
@@ -104,27 +112,25 @@ public class GameActivity extends AppCompatActivity {
 
         //Game over screen
         restart = findViewById((R.id.restart));
-        restart.setOnClickListener(v -> restartHandler());
+        restart.setOnClickListener(v -> restartOnClick());
 
         menuScore = findViewById(R.id.menuScore);
         menuScore.setOnClickListener(v ->startActivity(new Intent(GameActivity.this, MenuActivity.class)));
 
-        //Firebase
+        scoreText = findViewById(R.id.score);
+        highScoreText = findViewById(R.id.highScore);
+
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
         if (acct != null) {
-            String personName = acct.getDisplayName();
-//            String personGivenName = acct.getGivenName();
-//            String personFamilyName = acct.getFamilyName();
-//            String personEmail = acct.getEmail();
-            String personId = acct.getId();
-            Uri personPhoto = acct.getPhotoUrl();
+            personId = acct.getId();
+            personName = acct.getDisplayName();
         }
+
+        helper = new ScoreboardHelper();
     }
-    //TODO: Work on GUI
-    //TODO: Setup Firebase Google authentication and send points with current location to database for ranking
+    //TODO: Setup location to database
     //Start handler function
     public void startHandler() {
-        boxContainer.setVisibility(View.VISIBLE);
         start.setClickable(false);
         start.getBackground().setAlpha(128);
         timer.setText(R.string.timer);
@@ -141,16 +147,17 @@ public class GameActivity extends AppCompatActivity {
         counter.setText(String.valueOf(points));
         isStarted = false;
         flag = true;
-        start.setClickable(true);
-        restart.setClickable(false);
-        restart.getBackground().setAlpha(128);
-        start.getBackground().setAlpha(255);
         resetTimer();
         for (int i = allButtons.length - 1; i >= 0; i--) {
             allButtons[i].setVisibility(View.INVISIBLE);
             allButtons[i].getBackground().setAlpha(255);
         }
-        boxContainer.setVisibility(View.VISIBLE);
+        flipView();
+    }
+    public void restartOnClick() {
+        start.setClickable(true);
+        start.getBackground().setAlpha(255);
+        restartHandler();
     }
 
     public Button firstClick;
@@ -192,8 +199,6 @@ public class GameActivity extends AppCompatActivity {
                 secondClick.getBackground().setAlpha(255);
                 counter.setText(String.valueOf(points));
                 timeLeft -= 5000;
-                String str = timeLeft+"";
-                Log.i("Time Left: ",str);
                 if (timeLeft < 0) {
                     timeUp();
                 }
@@ -270,10 +275,39 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void timeUp() {
-        int score = Integer.parseInt(counter.getText().toString());
+        saveData();
         restartHandler();
-        boxContainer.setVisibility(View.INVISIBLE);
+    }
+
+    public void flipView() {
+        viewFlipper.showNext();
+    }
+
+    public void getData() {
+        highScoreText.setText(0);
+    }
+
+    public void saveData() {
+        // Id, UserName, Score, Location
+        database = FirebaseDatabase.getInstance();
+        reference = database.getReference().child("usersScores");
+        CharSequence score = counter.getText();
+        //TODO: Change to gps
+        String country = getApplicationContext().getResources().getConfiguration().locale.getDisplayCountry();
+
+        scoreText.setText(score);
         Log.i("Score: ", ""+score);
+
+        helper.setName(personName);
+        helper.setCountry(country);
+        helper.setScore(score);
+
+        reference.child("Scores").child(personId).setValue(helper);
+//        reference.push().setValue(helper);
+        Toast.makeText(GameActivity.this, "Data inserted!", Toast.LENGTH_LONG);
+
+        //TODO: Post score to Firebase
+        //TODO: Get highscore from Firebase
     }
 
 }
