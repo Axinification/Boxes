@@ -2,6 +2,7 @@ package com.example.boxes;
 
 import android.content.Intent;
 import android.content.res.TypedArray;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -11,15 +12,16 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+
 import java.util.Locale;
 import java.util.Random;
 
 
 public class GameActivity extends AppCompatActivity {
 
-    public Button start;
-    public Button restart;
-    public Button menu;
+    public Button start, menu, restart, menuScore;
     public Button[] allButtons;
     public TextView counter;
     public TextView timer;
@@ -47,11 +49,6 @@ public class GameActivity extends AppCompatActivity {
 
         menu = findViewById(R.id.menu);
         menu.setOnClickListener(v -> startActivity(new Intent(GameActivity.this, MenuActivity.class)));
-
-        restart = findViewById((R.id.restart));
-        restart.setOnClickListener(v -> restartHandler());
-        restart.setClickable(false);
-        restart.getBackground().setAlpha(128);
 
         boxContainer = findViewById(R.id.boxBoard);
 
@@ -104,6 +101,24 @@ public class GameActivity extends AppCompatActivity {
         for (Button button : allButtons) {
             button.setOnClickListener(v -> clickHandler(button));
         }
+
+        //Game over screen
+        restart = findViewById((R.id.restart));
+        restart.setOnClickListener(v -> restartHandler());
+
+        menuScore = findViewById(R.id.menuScore);
+        menuScore.setOnClickListener(v ->startActivity(new Intent(GameActivity.this, MenuActivity.class)));
+
+        //Firebase
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
+        if (acct != null) {
+            String personName = acct.getDisplayName();
+//            String personGivenName = acct.getGivenName();
+//            String personFamilyName = acct.getFamilyName();
+//            String personEmail = acct.getEmail();
+            String personId = acct.getId();
+            Uri personPhoto = acct.getPhotoUrl();
+        }
     }
     //TODO: Work on GUI
     //TODO: Setup Firebase Google authentication and send points with current location to database for ranking
@@ -112,8 +127,6 @@ public class GameActivity extends AppCompatActivity {
         boxContainer.setVisibility(View.VISIBLE);
         start.setClickable(false);
         start.getBackground().setAlpha(128);
-        restart.setClickable(true);
-        restart.getBackground().setAlpha(255);
         timer.setText(R.string.timer);
         addBoxes();
         setTimer(startingTime);
