@@ -14,4 +14,7 @@
     <string name="menu">menu</string>
     <string name="welcome">Welcome</string>
     <string name="times_up">Time\'s up!</string>
+    <string name="name">Name</string>
+    <string name="score">Score</string>
+    <string name="country">Country</string>
 </resources>

@@ -2,22 +2,23 @@ package com.example.boxes;
 
 import android.content.Intent;
 import android.content.res.TypedArray;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Locale;
 import java.util.Random;
@@ -29,18 +30,13 @@ public class GameActivity extends AppCompatActivity {
     private Button[] allButtons;
     private TextView counter, timer, scoreText, highScoreText;
     private int startingTime = 10000;
+    private int points = 0;
     private ViewFlipper viewFlipper;
     long timeLeft;
     String personId, personName;
-    ScoreboardHelper helper;
-
+    UserHelper helper;
     FirebaseDatabase database;
     DatabaseReference reference;
-
-
-    private int points = 0;
-
-
     private static int[] colors;
     boolean isStarted = false;
     boolean flag = true;
@@ -126,9 +122,9 @@ public class GameActivity extends AppCompatActivity {
             personName = acct.getDisplayName();
         }
 
-        helper = new ScoreboardHelper();
+        helper = new UserHelper();
     }
-    //TODO: Setup location to database
+
     //Start handler function
     public void startHandler() {
         start.setClickable(false);
@@ -247,6 +243,7 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
+    //Setting timer for the game
     public void setTimer(long currentTime) {
         countDownTimer = new CountDownTimer(currentTime, 1000) {
 
@@ -269,45 +266,57 @@ public class GameActivity extends AppCompatActivity {
         }.start();
     }
 
+    //Reseting timer
     public void resetTimer() {
         countDownTimer.cancel();
         timer.setText(R.string.timer);
     }
 
+    //Game over logic
     public void timeUp() {
+        getData();
         saveData();
         restartHandler();
     }
 
-    public void flipView() {
-        viewFlipper.showNext();
-    }
-
+    //Get data from firebase
     public void getData() {
-        highScoreText.setText(0);
+        database = FirebaseDatabase.getInstance();
+        reference = database.getReference().child("usersScores").child(personId);
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                CharSequence highScorePulled = dataSnapshot.child("highScore").getValue().toString();
+                highScoreText.setText(highScorePulled);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                highScoreText.setText(0);
+            }
+        });
     }
 
+    //Collect and save data
     public void saveData() {
-        // Id, UserName, Score, Location
         database = FirebaseDatabase.getInstance();
         reference = database.getReference().child("usersScores");
         CharSequence score = counter.getText();
         //TODO: Change to gps
         String country = getApplicationContext().getResources().getConfiguration().locale.getDisplayCountry();
-
         scoreText.setText(score);
-        Log.i("Score: ", ""+score);
+        String scoreString = score.toString();
+        if(Integer.parseInt(scoreString)>Integer.parseInt(highScoreText.getText().toString())) {
+            helper.setName(personName);
+            helper.setCountry(country);
+            helper.setHighScore(scoreString);
+            reference.child(personId).setValue(helper);
+        }
+    }
 
-        helper.setName(personName);
-        helper.setCountry(country);
-        helper.setScore(score);
-
-        reference.child("Scores").child(personId).setValue(helper);
-//        reference.push().setValue(helper);
-        Toast.makeText(GameActivity.this, "Data inserted!", Toast.LENGTH_LONG);
-
-        //TODO: Post score to Firebase
-        //TODO: Get highscore from Firebase
+    //Nested view flipper
+    public void flipView() {
+        viewFlipper.showNext();
     }
 
 }

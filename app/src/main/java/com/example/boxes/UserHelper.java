@@ -1,11 +1,10 @@
 package com.example.boxes;
 
-public class ScoreboardHelper {
+public class UserHelper {
 
-    String name, country;
-    CharSequence score;
+    String name, country, highScore;
 
-    public ScoreboardHelper() {
+    public UserHelper() {
 
     }
 
@@ -31,11 +30,11 @@ public class ScoreboardHelper {
         this.country = country;
     }
 
-    public CharSequence getScore() {
-        return score;
+    public String getHighScore() {
+        return highScore;
     }
 
-    public void setScore(CharSequence score) {
-        this.score = score;
+    public void setHighScore(String highScore) {
+        this.highScore = highScore;
     }
 }

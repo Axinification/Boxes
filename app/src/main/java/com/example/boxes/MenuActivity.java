@@ -61,10 +61,6 @@ public class MenuActivity extends AppCompatActivity {
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
         if (acct != null) {
             String personName = acct.getDisplayName();
-//            String personGivenName = acct.getGivenName();
-//            String personFamilyName = acct.getFamilyName();
-//            String personEmail = acct.getEmail();
-            String personId = acct.getId();
             Uri personPhoto = acct.getPhotoUrl();
 
             username.setText(personName);
@@ -83,7 +79,9 @@ public class MenuActivity extends AppCompatActivity {
 //                        startActivity(new Intent(MenuActivity.this, AuthActivity.class));
 //                    }
 //                });
+
         FirebaseAuth.getInstance().signOut();
+        mGoogleSignInClient.signOut();
         startActivity(new Intent(MenuActivity.this, AuthActivity.class));
     }
 
