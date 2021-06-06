@@ -21,33 +21,6 @@ public class GameActivityTest {
 
     private GameActivity gameActivity = null;
 
-    //Set buttons
-    Button btn1 = gameActivity.findViewById(R.id.btn1);
-    Button btn2 = gameActivity.findViewById(R.id.btn2);
-    Button btn3 = gameActivity.findViewById(R.id.btn3);
-    Button btn4 = gameActivity.findViewById(R.id.btn4);
-    Button btn5 = gameActivity.findViewById(R.id.btn5);
-    Button btn6 = gameActivity.findViewById(R.id.btn6);
-    Button btn7 = gameActivity.findViewById(R.id.btn7);
-    Button btn8 = gameActivity.findViewById(R.id.btn8);
-    Button btn9 = gameActivity.findViewById(R.id.btn9);
-    Button btn10 = gameActivity.findViewById(R.id.btn10);
-    Button btn11 = gameActivity.findViewById(R.id.btn11);
-    Button btn12 = gameActivity.findViewById(R.id.btn12);
-    Button btn13 = gameActivity.findViewById(R.id.btn13);
-    Button btn14 = gameActivity.findViewById(R.id.btn14);
-    Button btn15 = gameActivity.findViewById(R.id.btn15);
-    Button btn16 = gameActivity.findViewById(R.id.btn16);
-    Button btn17 = gameActivity.findViewById(R.id.btn17);
-    Button btn18 = gameActivity.findViewById(R.id.btn18);
-    Button btn19 = gameActivity.findViewById(R.id.btn19);
-    Button btn20 = gameActivity.findViewById(R.id.btn20);
-    Button btn21 = gameActivity.findViewById(R.id.btn21);
-    Button btn22 = gameActivity.findViewById(R.id.btn22);
-    Button btn23 = gameActivity.findViewById(R.id.btn23);
-    Button btn24 = gameActivity.findViewById(R.id.btn24);
-    Button btn25 = gameActivity.findViewById(R.id.btn25);
-
     @Before
     public void setUp() throws Exception {
         gameActivity = activityTestRule.getActivity();
@@ -93,6 +66,33 @@ public class GameActivityTest {
     @Test @UiThreadTest
     public void testRestartHandlerButtonsFunctionality() {
 
+        //Set buttons
+        Button btn1 = gameActivity.findViewById(R.id.btn1);
+        Button btn2 = gameActivity.findViewById(R.id.btn2);
+        Button btn3 = gameActivity.findViewById(R.id.btn3);
+        Button btn4 = gameActivity.findViewById(R.id.btn4);
+        Button btn5 = gameActivity.findViewById(R.id.btn5);
+        Button btn6 = gameActivity.findViewById(R.id.btn6);
+        Button btn7 = gameActivity.findViewById(R.id.btn7);
+        Button btn8 = gameActivity.findViewById(R.id.btn8);
+        Button btn9 = gameActivity.findViewById(R.id.btn9);
+        Button btn10 = gameActivity.findViewById(R.id.btn10);
+        Button btn11 = gameActivity.findViewById(R.id.btn11);
+        Button btn12 = gameActivity.findViewById(R.id.btn12);
+        Button btn13 = gameActivity.findViewById(R.id.btn13);
+        Button btn14 = gameActivity.findViewById(R.id.btn14);
+        Button btn15 = gameActivity.findViewById(R.id.btn15);
+        Button btn16 = gameActivity.findViewById(R.id.btn16);
+        Button btn17 = gameActivity.findViewById(R.id.btn17);
+        Button btn18 = gameActivity.findViewById(R.id.btn18);
+        Button btn19 = gameActivity.findViewById(R.id.btn19);
+        Button btn20 = gameActivity.findViewById(R.id.btn20);
+        Button btn21 = gameActivity.findViewById(R.id.btn21);
+        Button btn22 = gameActivity.findViewById(R.id.btn22);
+        Button btn23 = gameActivity.findViewById(R.id.btn23);
+        Button btn24 = gameActivity.findViewById(R.id.btn24);
+        Button btn25 = gameActivity.findViewById(R.id.btn25);
+
         int[] allButtonsAlpha = new int[]{btn1.getBackground().getAlpha(), btn2.getBackground().getAlpha(), btn3.getBackground().getAlpha(),
                 btn4.getBackground().getAlpha(), btn5.getBackground().getAlpha(), btn6.getBackground().getAlpha(), btn7.getBackground().getAlpha(),
                 btn8.getBackground().getAlpha(), btn9.getBackground().getAlpha(), btn10.getBackground().getAlpha(), btn11.getBackground().getAlpha(),
@@ -124,56 +124,56 @@ public class GameActivityTest {
         assertEquals(startBtn.getBackground().getAlpha(), 255, 0.1);
     }
 
-    @Test @UiThreadTest
-    public void testClickHandlerSameColors() {
-//        gameActivity.flag = true;
-//        btn1.setTextColor(2);
-//        btn2.setTextColor(2);
-//        long timeLeft = 9000;
-//        gameActivity.timeLeft = timeLeft;
-//        gameActivity.setTimer(timeLeft);
+//    @Test @UiThreadTest
+//    public void testClickHandlerSameColors() {
+////        gameActivity.flag = true;
+////        btn1.setTextColor(2);
+////        btn2.setTextColor(2);
+////        long timeLeft = 9000;
+////        gameActivity.timeLeft = timeLeft;
+////        gameActivity.setTimer(timeLeft);
+////
+////        assertEquals(gameActivity.timeLeft, 9000);
 //
-//        assertEquals(gameActivity.timeLeft, 9000);
-
-//        gameActivity.clickHandler(btn1);
-//        assertEquals(btn1.getBackground().getAlpha(), 128);
+////        gameActivity.clickHandler(btn1);
+////        assertEquals(btn1.getBackground().getAlpha(), 128);
+////
+////        gameActivity.flag = false;
+////        gameActivity.clickHandler(btn2);
+////        assertEquals(btn1.getBackground().getAlpha(), 255);
+////        assertEquals(gameActivity.timeLeft, 10000);
 //
-//        gameActivity.flag = false;
-//        gameActivity.clickHandler(btn2);
-//        assertEquals(btn1.getBackground().getAlpha(), 255);
-//        assertEquals(gameActivity.timeLeft, 10000);
-        
-
-
-    }
-
-    @Test
-    public void addBoxes() {
-    }
-
-    @Test
-    public void setTimer() {
-    }
-
-    @Test
-    public void resetTimer() {
-    }
-
-    @Test
-    public void timeUp() {
-    }
-
-    @Test
-    public void getData() {
-    }
-
-    @Test
-    public void saveData() {
-    }
-
-    @Test
-    public void flipView() {
-    }
+//
+//
+//    }
+//
+//    @Test
+//    public void addBoxes() {
+//    }
+//
+//    @Test
+//    public void setTimer() {
+//    }
+//
+//    @Test
+//    public void resetTimer() {
+//    }
+//
+//    @Test
+//    public void timeUp() {
+//    }
+//
+//    @Test
+//    public void getData() {
+//    }
+//
+//    @Test
+//    public void saveData() {
+//    }
+//
+//    @Test
+//    public void flipView() {
+//    }
 
     @After
     public void tearDown() throws Exception {
