@@ -59,6 +59,10 @@ public class MenuActivity extends AppCompatActivity {
         signOut.setOnClickListener(v -> signOut());
 
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
+        setName(acct);
+    }
+
+    public void setName(GoogleSignInAccount acct) {
         if (acct != null) {
             String personName = acct.getDisplayName();
             Uri personPhoto = acct.getPhotoUrl();

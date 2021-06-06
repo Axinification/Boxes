@@ -1,7 +1,10 @@
 package com.example.boxes;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
@@ -11,9 +14,13 @@ import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -41,6 +48,9 @@ public class GameActivity extends AppCompatActivity {
     boolean isStarted = false;
     boolean flag = true;
     private CountDownTimer countDownTimer;
+    private FusedLocationProviderClient fusedLocationClient;
+    String country;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +65,7 @@ public class GameActivity extends AppCompatActivity {
         menu.setOnClickListener(v -> startActivity(new Intent(GameActivity.this, MenuActivity.class)));
 
         viewFlipper = findViewById(R.id.viewFlipper);
-
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         //Set color list
         TypedArray ta = getResources().obtainTypedArray(R.array.buttonColors);
@@ -99,7 +109,7 @@ public class GameActivity extends AppCompatActivity {
         Button btn25 = findViewById(R.id.btn25);
 
         //Declare buttons list and click function
-        allButtons = new Button[] {btn1, btn2, btn3, btn4, btn5, btn6, btn7,
+        allButtons = new Button[]{btn1, btn2, btn3, btn4, btn5, btn6, btn7,
                 btn8, btn9, btn10, btn11, btn12, btn13, btn14, btn15, btn16,
                 btn17, btn18, btn19, btn20, btn21, btn22, btn23, btn24, btn25};
         for (Button button : allButtons) {
@@ -111,7 +121,7 @@ public class GameActivity extends AppCompatActivity {
         restart.setOnClickListener(v -> restartOnClick());
 
         menuScore = findViewById(R.id.menuScore);
-        menuScore.setOnClickListener(v ->startActivity(new Intent(GameActivity.this, MenuActivity.class)));
+        menuScore.setOnClickListener(v -> startActivity(new Intent(GameActivity.this, MenuActivity.class)));
 
         scoreText = findViewById(R.id.score);
         highScoreText = findViewById(R.id.highScore);
@@ -132,7 +142,7 @@ public class GameActivity extends AppCompatActivity {
         timer.setText(R.string.timer);
         addBoxes();
         setTimer(startingTime);
-        isStarted=!isStarted;
+        isStarted = !isStarted;
     }
 
     //Restart handler function
@@ -150,6 +160,7 @@ public class GameActivity extends AppCompatActivity {
         }
         flipView();
     }
+
     public void restartOnClick() {
         start.setClickable(true);
         start.getBackground().setAlpha(255);
@@ -163,7 +174,7 @@ public class GameActivity extends AppCompatActivity {
 
     //Box click handler function
     //Boxes are matched based on color
-    public void clickHandler(View view){
+    public void clickHandler(View view) {
         if (flag) {
             firstClick = (Button) view;
             firstColorCheck = firstClick.getCurrentTextColor();
@@ -197,8 +208,7 @@ public class GameActivity extends AppCompatActivity {
                 timeLeft -= 5000;
                 if (timeLeft < 0) {
                     timeUp();
-                }
-                else {
+                } else {
                     countDownTimer.cancel();
                     setTimer(timeLeft);
                 }
@@ -210,17 +220,17 @@ public class GameActivity extends AppCompatActivity {
     //Add pair function
     public void addBoxes() {
         Button[] selectedButton = selectButtons(allButtons);
-        Random color =  new Random();
+        Random color = new Random();
         int selectedColor = colors[color.nextInt(colors.length)];
         if (isStarted) {
-            for (int i=0;i<3;i++) {
+            for (int i = 0; i < 3; i++) {
                 selectedButton[i].setBackgroundColor(selectedColor);
                 selectedButton[i].setTextColor(selectedColor);
                 selectedButton[i].setVisibility(View.VISIBLE);
                 selectedButton[i].setClickable(true);
             }
         } else {
-            for (int i=0;i<2;i++) {
+            for (int i = 0; i < 2; i++) {
                 selectedButton[i].setBackgroundColor(selectedColor);
                 selectedButton[i].setTextColor(selectedColor);
                 selectedButton[i].setVisibility(View.VISIBLE);
@@ -236,7 +246,7 @@ public class GameActivity extends AppCompatActivity {
         Button randomButton2 = allButtons[button.nextInt(allButtons.length)];
         Button randomButton3 = allButtons[button.nextInt(allButtons.length)];
 
-        if(randomButton1.getId() != randomButton2.getId() && randomButton2.getId() != randomButton3.getId()) {
+        if (randomButton1.getId() != randomButton2.getId() && randomButton2.getId() != randomButton3.getId()) {
             return new Button[]{randomButton1, randomButton2, randomButton3};
         } else {
             return selectButtons(allButtons);
@@ -295,6 +305,23 @@ public class GameActivity extends AppCompatActivity {
                 highScoreText.setText(0);
             }
         });
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            fusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                @Override
+                public void onSuccess(Location location) {
+                    // Got last known location. In some rare situations this can be null.
+                    if (location != null) {
+                        country = location.toString();
+                    } else {
+                        country = getApplicationContext().getResources().getConfiguration().locale.getDisplayCountry();
+                    }
+                }
+            });
+        } else {
+//            askLocationPermission();
+            country = getApplicationContext().getResources().getConfiguration().locale.getDisplayCountry();
+        }
     }
 
     //Collect and save data
@@ -302,8 +329,10 @@ public class GameActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         reference = database.getReference().child("usersScores");
         CharSequence score = counter.getText();
-        //TODO: Change to gps
-        String country = getApplicationContext().getResources().getConfiguration().locale.getDisplayCountry();
+
+
+
+
         scoreText.setText(score);
         String scoreString = score.toString();
         if(Integer.parseInt(scoreString)>Integer.parseInt(highScoreText.getText().toString())) {

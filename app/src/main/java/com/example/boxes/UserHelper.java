@@ -8,12 +8,6 @@ public class UserHelper {
 
     }
 
-//    public ScoreboardHelper(String name, String country, CharSequence score) {
-//        this.name = name;
-//        this.country = country;
-//        this.score = score;
-//    }
-
     public String getName() {
         return name;
     }
