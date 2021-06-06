@@ -6,6 +6,7 @@ import static org.junit.Assert.*;
 
 public class UserHelperTest {
 
+
     @Test
     public void checkNameGetter() {
         String name = "testName";

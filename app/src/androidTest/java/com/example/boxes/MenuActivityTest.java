@@ -28,11 +28,6 @@ public class MenuActivityTest {
         menuActivity = activityTestRule.getActivity();
     }
 
-    @Test @UiThreadTest
-    public void checkIfGenerated() {
-        View view = menuActivity.findViewById(R.id.menu);
-        assertNotNull(view);
-    }
 
     @Test @UiThreadTest
     public void checkIfNameIsPlayerOnNullAcct() {

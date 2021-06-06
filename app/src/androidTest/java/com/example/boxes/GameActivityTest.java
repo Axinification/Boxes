@@ -72,8 +72,27 @@ public class GameActivityTest {
 
     }
 
-    @Test
+    @Test @UiThreadTest
     public void testRestartHandler() {
+
+        CharSequence testPoints = "0";
+        TextView counter = gameActivity.findViewById(R.id.points);
+        TextView timer = gameActivity.findViewById(R.id.timer);
+        gameActivity.flag = false;
+        gameActivity.setTimer(10000);
+
+        gameActivity.restartHandler();
+
+        assertEquals(counter.getText(), testPoints);
+        assertFalse(gameActivity.isStarted);
+        assertEquals(timer.getText(), "00:00");
+        assertTrue(gameActivity.flag);
+
+    }
+
+    @Test @UiThreadTest
+    public void testRestartHandlerButtonsFunctionality() {
+
         int[] allButtonsAlpha = new int[]{btn1.getBackground().getAlpha(), btn2.getBackground().getAlpha(), btn3.getBackground().getAlpha(),
                 btn4.getBackground().getAlpha(), btn5.getBackground().getAlpha(), btn6.getBackground().getAlpha(), btn7.getBackground().getAlpha(),
                 btn8.getBackground().getAlpha(), btn9.getBackground().getAlpha(), btn10.getBackground().getAlpha(), btn11.getBackground().getAlpha(),
@@ -85,27 +104,47 @@ public class GameActivityTest {
         int[] expectedAlphaArray = new int[]{255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
                 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255};
 
-        CharSequence points = "0";
-        TextView counter = gameActivity.findViewById(R.id.points);
-        TextView timer = gameActivity.findViewById(R.id.timer);
-        gameActivity.flag = true;
-        gameActivity.setTimer(0);
+        gameActivity.setTimer(1000);
 
         gameActivity.restartHandler();
 
-        assertEquals(counter.getText(), points);
-        assertFalse(gameActivity.isStarted);
-        assertEquals(timer.getText(), "00:00");
-        assertFalse(gameActivity.flag);
-        assertEquals(allButtonsAlpha, expectedAlphaArray);
+        assertArrayEquals(allButtonsAlpha, expectedAlphaArray);
     }
 
-    @Test
-    public void restartOnClick() {
+    @Test @UiThreadTest
+    public void testRestartOnClick() {
+        Button startBtn = gameActivity.findViewById(R.id.start);
+        startBtn.setClickable(false);
+        startBtn.getBackground().setAlpha(0);
+        gameActivity.setTimer(10000);
+
+        gameActivity.restartOnClick();
+
+        assertTrue(startBtn.isClickable());
+        assertEquals(startBtn.getBackground().getAlpha(), 255, 0.1);
     }
 
-    @Test
-    public void clickHandler() {
+    @Test @UiThreadTest
+    public void testClickHandlerSameColors() {
+//        gameActivity.flag = true;
+//        btn1.setTextColor(2);
+//        btn2.setTextColor(2);
+//        long timeLeft = 9000;
+//        gameActivity.timeLeft = timeLeft;
+//        gameActivity.setTimer(timeLeft);
+//
+//        assertEquals(gameActivity.timeLeft, 9000);
+
+//        gameActivity.clickHandler(btn1);
+//        assertEquals(btn1.getBackground().getAlpha(), 128);
+//
+//        gameActivity.flag = false;
+//        gameActivity.clickHandler(btn2);
+//        assertEquals(btn1.getBackground().getAlpha(), 255);
+//        assertEquals(gameActivity.timeLeft, 10000);
+        
+
+
     }
 
     @Test
